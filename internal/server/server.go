@@ -3,7 +3,6 @@ package server
 import (
 	"errors"
 	"html/template"
-	"io"
 	"mime"
 	"net/http"
 	"path/filepath"
@@ -15,34 +14,36 @@ import (
 
 type Server struct {
 	http.Server
-	c *cfg.Config
-	t *template.Template
+	cfg  *cfg.Config
+	tmpl *template.Template
 }
 
 func (s *Server) serveFile(filename string) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		f, err := web.FS.Open(filename)
-		if err != nil {
-			log.Error().Err(err).Msg("Error serving file")
+		t := s.tmpl.Lookup(filename)
+		if t == nil {
+			log.Error().Str("filename", filename).Msg("Template not found")
 			w.WriteHeader(http.StatusInternalServerError)
 			return
-		}
-		ext := filepath.Ext(filename)
-		log.Debug().Str("ext", ext).Msg("Serving file")
-		switch ext {
-		case ".css":
-			t := mime.TypeByExtension(ext)
-			log.Debug().Str("mime-type", t).Msg("Serving file")
-			w.Header().Set("Content-Type", t)
 		}
 
-		_, err = io.Copy(w, f)
+		ext := filepath.Ext(filename)
+		var mt string
+		switch ext {
+		case ".css":
+			mt = mime.TypeByExtension(ext)
+		default:
+			mt = mime.TypeByExtension(".html")
+		}
+		w.Header().Set("Content-Type", mt)
+
+		err := t.Execute(w, s.cfg)
 		if err != nil {
 			log.Error().Err(err).Msg("Error serving file")
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		log.Debug().Str("path", r.URL.Path).Str("filename", filename).Msg("Serving file")
+		log.Debug().Str("mime-type", mt).Str("path", r.URL.Path).Str("filename", filename).Msg("Serving file")
 	}
 }
 
@@ -62,7 +63,7 @@ func New(cfgFile, addr string) (*Server, error) {
 	}
 
 	s := Server{
-		c: c,
+		cfg: c,
 	}
 
 	mux := http.NewServeMux()
@@ -71,7 +72,7 @@ func New(cfgFile, addr string) (*Server, error) {
 
 	s.Handler = mux
 	s.Addr = addr
-	s.t, err = template.New("index.tmpl").ParseFS(web.FS, "*")
+	s.tmpl, err = template.New("index.tmpl").ParseFS(web.FS, "*")
 	if err != nil {
 		return nil, err
 	}

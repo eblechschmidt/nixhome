@@ -23,7 +23,6 @@
         </section>
 
         <section id="apps">
-            <script type="text/handlebars-template" id="apps-template">
             <h3>Applications</h3>
             <div id="apps_loop">
                 {{range $group_name, $group := .Apps}}
@@ -31,13 +30,13 @@
                         <h4>{{$group_name}}</h4>
 						{{range $group}}
 		                    <div class="apps_item">
-		                        <a href="http://{{.Url}}" style="display: flex;">
+		                        <a href="http://{{.URL}}" style="display: flex;">
 		                        <div class="apps_icon">
 									<img src="{{.Icon}}">
 		                        </div>
 		                        <div class="apps_text">
 		                            {{.Name}}
-		                            <span id="app-address">{{.Url}}</span>
+		                            <span id="app-address">{{.URL}}</span>
 		                        </div>
 		                        </a>
 		                    </div>
@@ -45,7 +44,6 @@
 					</div>
                 {{end}}
             </div>
-            </script>
         </section>
     </main>
 </body>

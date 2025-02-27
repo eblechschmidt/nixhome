@@ -33,6 +33,7 @@ body{
 	--color-background: #2E3440;
 	--color-text-pri: #E5E9F0;
 	--color-text-acc: #5E81AC;
+	--module-spacing: 1em;
 }
 
 
@@ -206,6 +207,13 @@ table a{
 	grid-template-columns: 1fr 1fr 1fr 1fr;
 	grid-template-rows: 64px;
 	padding-bottom: var(--module-spacing);
+
+	display: grid;
+	flex-wrap: nowrap;
+	grid-column-gap: 20px;
+	grid-row-gap: 0px;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-template-rows: auto;
 }
 
 .apps_icon{
