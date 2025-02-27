@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SUI</title>
+    <meta charset="utf-8">
+    <meta name="description" content="a startpage for your server and / or new tab page">
+    <meta http-equiv="Default-Style" content="">
+    <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <link type="text/css" rel="stylesheet" href="style.css" media="screen,projection"/>
+</head>
+
+<body onload="loadFunctions()">
+
+    <main id="container" class="fade">
+
+        <section id="search">
+            <input name="keywords" type="text" id="keywords" size="50" spellcheck="false" autofocus="true" onkeydown="handleKeyPress(event)">
+        </section>
+
+        <section id="header">
+            <h2 id="header_date"></h2>
+            <h1 id="header_greet"></h1>
+        </section>
+
+        <section id="apps">
+            <script type="text/handlebars-template" id="apps-template">
+            <h3>Applications</h3>
+            <div id="apps_loop">
+                {{range $group_name, $group := .Apps}}
+                    <div id="links_item">
+                        <h4>{{$group_name}}</h4>
+						{{range $group}}
+		                    <div class="apps_item">
+		                        <a href="http://{{.Url}}" style="display: flex;">
+		                        <div class="apps_icon">
+									<img src="{{.Icon}}">
+		                        </div>
+		                        <div class="apps_text">
+		                            {{.Name}}
+		                            <span id="app-address">{{.Url}}</span>
+		                        </div>
+		                        </a>
+		                    </div>
+						{{end}}
+					</div>
+                {{end}}
+            </div>
+            </script>
+        </section>
+    </main>
+</body>
+</html>
+

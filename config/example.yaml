@@ -1,0 +1,19 @@
+apps:
+  homeautomation:
+    - icon: homeassistant
+      name: homeassistant
+      url: homeassistant.bullerbyn.local
+    - icon: zigbee2mqtt
+      name: zigbee2mqtt
+      url: zigbee2mqtt.bullerbyn.local
+    - icon: 374171/vscode
+      name: codeserver
+      url: codeha.bullerbyn.local
+  monitoring:
+    - icon: grafana
+      name: grafana
+      url: grafana1.bullerbyn.local
+  infrastructure:
+    - icon: 
+      name: grafana
+      url: grafana1.bullerbyn.local
