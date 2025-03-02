@@ -222,6 +222,10 @@ table a{
 	padding-top: 15px;
 }
 
+.apps_icon svg{
+	height: 32px;
+}
+
 .apps_icon span{
 	font-size: 2.5em;
 	line-height: 3rem;

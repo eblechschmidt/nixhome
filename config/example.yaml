@@ -1,3 +1,8 @@
+colors:
+  dark:
+    background: "#2E3440"
+    text: "#5E81AC"
+    accent: "#8FBCBB"
 apps:
   homeautomation:
     - icon: homeassistant

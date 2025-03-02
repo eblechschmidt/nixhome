@@ -25,7 +25,7 @@ var rootCmd = &cobra.Command{
 		if os.IsNotExist(err) {
 			return err
 		}
-		s, err := server.New(cfgFile, ":8080")
+		s, err := server.New(cfgFile, ":8080", dataDir)
 		if err != nil {
 			return err
 		}

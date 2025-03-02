@@ -9,12 +9,12 @@
     <link type="text/css" rel="stylesheet" href="style.css" media="screen,projection"/>
 </head>
 
-<body onload="loadFunctions()">
+<body>
 
     <main id="container" class="fade">
 
         <section id="search">
-            <input name="keywords" type="text" id="keywords" size="50" spellcheck="false" autofocus="true" onkeydown="handleKeyPress(event)">
+            <input name="keywords" type="text" id="keywords" size="50" spellcheck="false" autofocus="true">
         </section>
 
         <section id="header">
@@ -32,7 +32,7 @@
 		                    <div class="apps_item">
 		                        <a href="http://{{.URL}}" style="display: flex;">
 		                        <div class="apps_icon">
-									<img src="{{.Icon}}">
+									{{icon .Icon}}
 		                        </div>
 		                        <div class="apps_text">
 		                            {{.Name}}

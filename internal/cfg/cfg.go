@@ -7,7 +7,8 @@ import (
 )
 
 type Config struct {
-	Apps map[string]Apps
+	Colors Colors
+	Apps   map[string]Apps
 }
 
 type Apps []App
@@ -16,6 +17,17 @@ type App struct {
 	Icon string
 	Name string
 	URL  string
+}
+
+type Colors struct {
+	Dark  ColorSet
+	Light ColorSet
+}
+
+type ColorSet struct {
+	Background string
+	Text       string
+	Accent     string
 }
 
 // FromFile takes a yaml file and unmarshals the config
