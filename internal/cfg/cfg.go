@@ -1,27 +1,29 @@
 package cfg
 
 import (
+	"html/template"
 	"os"
 
 	"gopkg.in/yaml.v3"
 )
 
 type Config struct {
-	Colors Colors
+	Colors *Colors
 	Apps   map[string]Apps
 }
 
-type Apps []App
+type Apps []*App
 
 type App struct {
-	Icon string
-	Name string
-	URL  string
+	Icon          template.HTML
+	Name          string
+	URL           string
+	ColorizedIcon template.HTML
 }
 
 type Colors struct {
-	Dark  ColorSet
-	Light ColorSet
+	Dark  *ColorSet
+	Light *ColorSet
 }
 
 type ColorSet struct {

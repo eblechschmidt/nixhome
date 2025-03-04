@@ -3,97 +3,54 @@ package icon
 import (
 	"crypto/sha256"
 	"fmt"
+	"image/color"
 	"io"
 	"mime"
 	"net/http"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 
-	"github.com/eblechschmidt/nixhome/internal/cfg"
+	"github.com/crazy3lf/colorconv"
 	"github.com/rs/zerolog/log"
-	"golang.org/x/net/html"
 )
 
-type Icon struct {
-	data   *html.Node
-	Mime   string
-	colors *cfg.Colors
-}
-
-func (i *Icon) Write(w io.Writer) error {
-	// _, err := w.Write(i.data)
-	err := render(w, i.data)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (i *Icon) WriteColored(w io.Writer) error {
-	// if !bytes.Contains(i.data, []byte("fill:")) {
-	// 	ind := bytes.Index(i.data, []byte(">"))
-	// 	_, err := w.Write(i.data[:ind])
-	// 	if err != nil {
-	// 		return err
-	// 	}
-	// 	_, err = w.Write([]byte(" style=\"fill: var(--color-text-pri);\""))
-	// 	if err != nil {
-	// 		return err
-	// 	}
-	// 	_, err = w.Write(i.data[ind:])
-	// 	if err != nil {
-	// 		return err
-	// 	}
-	// 	return nil
-	// }
-
-	err := render(w, i.data)
-	// _, err := w.Write(i.data)
-	if err != nil {
-		return err
-	}
-	return nil
-
-}
-
-func New(icon string, dataDir string) (*Icon, error) {
+func New(icon string, dataDir string, col string) (string, error) {
 	if icon == "" {
 		log.Debug().Msg("No icon specified")
-		return nil, nil
+		return "", nil
 	}
 	dir := filepath.Join(dataDir, "icons")
 	err := os.MkdirAll(dir, os.ModePerm)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	fname, err := cacheFile(icon, dir)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	if fname == "" {
 		fname, err = download(icon, dir)
 		if err != nil {
-			return nil, err
+			return "", err
 		}
 	}
 
 	f, err := os.Open(fname)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	defer f.Close()
-	h, err := html.Parse(f)
+
+	b, err := io.ReadAll(f)
 	if err != nil {
-		return nil, fmt.Errorf("could not parse svg icon: %w", err)
+		return "", err
 	}
-	removeSize(h)
 
-	m := mime.TypeByExtension(filepath.Ext(fname))
-
-	return &Icon{data: h, Mime: m}, nil
+	return fixViewBox(string(b)), nil
 }
 
 func download(icon, dir string) (string, error) {
@@ -101,6 +58,8 @@ func download(icon, dir string) (string, error) {
 	ispath := strings.Count(icon, "/") > 0
 	var url string
 	switch {
+	case strings.HasPrefix(icon, "http"):
+		url = icon
 	case !ispath:
 		url = fmt.Sprintf("https://raw.githubusercontent.com/simple-icons/simple-icons/refs/heads/develop/icons/%s.svg", icon)
 	case ispath:
@@ -115,6 +74,9 @@ func download(icon, dir string) (string, error) {
 	}
 	defer resp.Body.Close()
 
+	if resp.StatusCode == 404 {
+		return "", fmt.Errorf("icon not found")
+	}
 	ct, ok := resp.Header["Content-Type"]
 	ext := ".txt"
 	if ok && len(ct) == 1 {
@@ -127,6 +89,7 @@ func download(icon, dir string) (string, error) {
 		}
 		log.Debug().Str("icon", icon).Str("url", url).Strs("content-type", ct).Strs("ext", e).Msg("Get header")
 	}
+	log.Debug().Str("icon", icon).Str("status", resp.Status).Str("url", url).Strs("content-type", ct).Msg("Get header")
 
 	fname := filepath.Join(dir, hash(icon)+ext)
 	f, err := os.OpenFile(fname, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
@@ -140,7 +103,7 @@ func download(icon, dir string) (string, error) {
 		return "", err
 	}
 
-	return "", nil
+	return fname, nil
 }
 
 func hash(s string) string {
@@ -173,64 +136,90 @@ func base(fname string) string {
 	return strings.TrimSuffix(filepath.Base(fname), filepath.Ext(fname))
 }
 
-func removeSize(n *html.Node) {
-	if n.Type == html.ElementNode {
-		attr := make([]html.Attribute, 0, len(n.Attr))
-		for _, a := range n.Attr {
-			if (a.Key != "width") && (a.Key != "height") {
-				attr = append(attr, a)
-			}
-		}
-		n.Attr = attr
+func hex2col(hex string) color.Color {
+	if len(hex) == 4 {
+		hex = fmt.Sprintf("#%c%c%c%c%c%c", hex[1], hex[1], hex[2], hex[2], hex[3], hex[3])
 	}
-
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		removeSize(c)
+	col, err := colorconv.HexToColor(hex)
+	if err != nil {
+		fmt.Println(err)
+		panic("this should not happen")
 	}
+	return col
 }
 
-func render(w io.Writer, n *html.Node) error {
-	log.Debug().Str("Data", n.Data).Uint32("Type", uint32(n.Type)).Msg("Render node")
-	tag := ""
-	if n.Type == html.ElementNode &&
-		(n.Data != "html" && n.Data != "head" && n.Data != "body") {
-		_, err := io.WriteString(w, fmt.Sprintf("<%s", n.Data))
-		if err != nil {
-			log.Error().Err(err).Msg("Could not write start of tag")
-			return err
-		}
-		tag = n.Data
+func col2hex(c color.Color) string {
+	r, g, b, _ := c.RGBA()
+	return fmt.Sprintf("#%02x%02x%02x", uint8(r>>8), uint8(g>>8), uint8(b>>8))
+}
 
-		for _, a := range n.Attr {
-			if (a.Key != "width") && (a.Key != "height") {
-				_, err := io.WriteString(w, fmt.Sprintf(" %s=\"%s\"", a.Key, a.Val))
-				if err != nil {
-					log.Error().Err(err).Msg("Attr")
-					return err
-				}
-			}
-		}
-		_, err = io.WriteString(w, ">")
-		if err != nil {
-			log.Error().Err(err).Msg("Could not write end of tag")
-			return err
+func Colorize(data, color string) string {
+	hcol, scol, lcol := colorconv.ColorToHSL(hex2col(color))
+	// Regular expression to match both short and long hex color codes
+
+	re := regexp.MustCompile(`#[0-9a-fA-F]{3,6}\b`)
+
+	// Find all matches
+
+	matches := re.FindAllString(data, -1)
+
+	lmin := 1.0
+
+	for _, m := range matches {
+		_, _, l := colorconv.ColorToHSL(hex2col(m))
+
+		if l < lmin {
+			lmin = l
 		}
 	}
 
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		err := render(w, c)
+	for _, m := range matches {
+		_, _, l := colorconv.ColorToHSL(hex2col(m))
+		lnew := 1 - ((1 - l) / (1 - lmin) * (1 - lcol))
+		// fmt.Println(l, lmin, lcol, lnew)
+		newcol, err := colorconv.HSLToColor(hcol, scol, lnew)
 		if err != nil {
-			log.Error().Err(err).Msg("Could not render children")
-			return err
+			fmt.Println(err)
+			panic("this should not have happened")
 		}
+		newhex := col2hex(newcol)
+
+		data = strings.ReplaceAll(data, m, newhex)
+
 	}
 
-	if tag != "" {
-		_, err := io.WriteString(w, fmt.Sprintf("</%s>", tag))
-		if err != nil {
-			log.Error().Err(err).Msg("Could not write closing tag")
-			return err
-		}
+	// svg that do not have color information will be colored directly with a
+	// style attribute to the paths
+	if len(matches) == 0 {
+		data = strings.ReplaceAll(data, "<path ", fmt.Sprintf("<path style=\"fill:%s\" ", color))
 	}
-	return nil
+
+	data = strings.Trim(data, "\n\r\t")
+	return data
+}
+
+func fixViewBox(data string) string {
+	re := regexp.MustCompile(`<svg[^>]*\bviewBox="([^"]+)"`)
+	match := re.FindStringSubmatch(data)
+	if len(match) > 0 {
+		return data
+	}
+	fmt.Println(match)
+
+	re1 := regexp.MustCompile(`<svg[^>]*\bwidth="([^"]+)"`)
+	match = re1.FindStringSubmatch(data)
+	if len(match) < 2 {
+		return data
+	}
+	width := strings.TrimSuffix(match[1], "px")
+	fmt.Println(width)
+
+	re = regexp.MustCompile(`<svg[^>]*\bwidth="([^"]+)"`)
+	match = re.FindStringSubmatch(data)
+	if len(match) < 2 {
+		return data
+	}
+	height := strings.TrimSuffix(match[1], "px")
+
+	return strings.ReplaceAll(data, "<svg ", fmt.Sprintf("<svg viewBox=\"0 0 %s %s\" ", width, height))
 }

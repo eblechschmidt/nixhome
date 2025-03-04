@@ -8,6 +8,9 @@ apps:
     - icon: homeassistant
       name: homeassistant
       url: homeassistant.bullerbyn.local
+    - icon: esphome
+      name: esphome
+      url: esphome.bullerbyn.local
     - icon: zigbee2mqtt
       name: zigbee2mqtt
       url: zigbee2mqtt.bullerbyn.local
@@ -15,28 +18,27 @@ apps:
       name: codeserver
       url: codeha.bullerbyn.local
   monitoring:
-    - icon: grafana
+    - icon: 353829/grafana
       name: grafana
       url: grafana1.bullerbyn.local
   infrastructure:
-    - icon: 
-      name: grafana
-      url: grafana1.bullerbyn.local
-  homeautomation1:
-    - icon: homeassistant
-      name: homeassistant
-      url: homeassistant.bullerbyn.local
-    - icon: zigbee2mqtt
-      name: zigbee2mqtt
-      url: zigbee2mqtt.bullerbyn.local
-    - icon: 374171/vscode
-      name: codeserver
-      url: codeha.bullerbyn.local
-  monitoring1:
-    - icon: grafana
-      name: grafana
-      url: grafana1.bullerbyn.local
-  infrastructure1:
-    - icon: 
-      name: grafana
-      url: grafana1.bullerbyn.local
+    - icon: pihole
+      name: pihole
+      url: pihole.bullerbyn.local
+    - icon: portainer
+      name: portainer
+      url: portainer.bullerbyn.local
+    - icon: traefikproxy
+      name: traefik
+      url: traefik.bullerbyn.local
+  media:
+    - icon: 518568/photoprism
+      name: photoprism
+      url: photoprism.bullerbyn.local
+    - icon: 475700/youtube-color
+      name: youtube
+      url: yt.bullerbyn.local
+  dev:
+    - icon: https://upload.wikimedia.org/wikipedia/commons/b/bb/Gitea_Logo.svg
+      name: gitea
+      url: gitea.bullerbyn.local
