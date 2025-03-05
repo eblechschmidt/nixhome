@@ -245,19 +245,12 @@ a:hover{
     
 	#apps_loop{
 		grid-template-columns: 1fr 1fr 1fr;
-		width: 100vw;
+		width: 100%;
 	}
 
 	#links_loop	{
 		grid-template-columns: 1fr 1fr 1fr;
 	}
-
-    #modal>div{
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 5vh;
-        width: 90%;
-    }
 }
 
 @media screen and (max-width: 768px)
@@ -279,19 +272,12 @@ a:hover{
     
 	#apps_loop{
 		grid-template-columns: 1fr 1fr;
-		width: 100vw;
+		width: 100%;
 	}
 
 	#links_loop	{
 		grid-template-columns: 1fr 1fr;
 	}
-
-    #modal>div{
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 5vh;
-        width: 90%;
-    }
 }
 
 @media screen and (max-width: 576px)
@@ -332,7 +318,7 @@ a:hover{
 		grid-column-gap: 0px;
 		grid-row-gap: 0px;
 		grid-template-columns: 1fr;
-		width: 100vw;
+		width: 100%;
 	}
 
 	.apps_icon{
