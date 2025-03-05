@@ -12,16 +12,6 @@
 <body>
 
     <main id="container" class="fade">
-
-        <section id="search">
-            <input name="keywords" type="text" id="keywords" size="50" spellcheck="false" autofocus="true">
-        </section>
-
-        <section id="header">
-            <h2 id="header_date"></h2>
-            <h1 id="header_greet"></h1>
-        </section>
-
         <section id="apps">
             <h3>Applications</h3>
             <div id="apps_loop">
@@ -30,7 +20,7 @@
                         <h4>{{$group_name}}</h4>
 						{{range $group}}
 		                    <div class="apps_item">
-		                        <a href="http://{{.URL}}" style="display: flex;">
+		                        <a href="{{.URL}}" style="display: flex;">
 		                        <div class="apps_icon">
 									{{.ColorizedIcon}}
 		                        </div>

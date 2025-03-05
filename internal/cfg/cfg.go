@@ -24,6 +24,7 @@ type App struct {
 type Colors struct {
 	Dark  *ColorSet
 	Light *ColorSet
+	Icon  string
 }
 
 type ColorSet struct {

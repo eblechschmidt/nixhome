@@ -73,7 +73,7 @@ func New(cfgFile, addr, dataDir string) (*Server, error) {
 				continue
 			}
 			app.Icon = template.HTML(data)
-			app.ColorizedIcon = template.HTML(icon.Colorize(string(data), c.Colors.Dark.Text))
+			app.ColorizedIcon = template.HTML(icon.Colorize(string(data), c.Colors.Icon))
 		}
 	}
 

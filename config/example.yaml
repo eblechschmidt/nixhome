@@ -3,42 +3,47 @@ colors:
     background: "#2E3440"
     text: "#5E81AC"
     accent: "#8FBCBB"
+  light:
+    background: "#ECEFF4"
+    text: "#5E81AC"
+    accent: "#88C0D0"
+  icon: "#5E81AC"
 apps:
   homeautomation:
     - icon: homeassistant
       name: homeassistant
-      url: homeassistant.bullerbyn.local
+      url: https://www.home-assistant.io/
     - icon: esphome
       name: esphome
-      url: esphome.bullerbyn.local
+      url: https://esphome.io/
     - icon: zigbee2mqtt
       name: zigbee2mqtt
-      url: zigbee2mqtt.bullerbyn.local
+      url: https://www.zigbee2mqtt.io/
     - icon: 374171/vscode
       name: codeserver
-      url: codeha.bullerbyn.local
+      url: https://code.visualstudio.com/
   monitoring:
     - icon: 353829/grafana
       name: grafana
-      url: grafana1.bullerbyn.local
+      url: https://grafana.com/
   infrastructure:
     - icon: pihole
       name: pihole
-      url: pihole.bullerbyn.local
+      url: https://pi-hole.net/
     - icon: portainer
       name: portainer
-      url: portainer.bullerbyn.local
+      url: https://www.portainer.io/
     - icon: traefikproxy
       name: traefik
-      url: traefik.bullerbyn.local
+      url: https://traefik.io/traefik/
   media:
     - icon: 518568/photoprism
       name: photoprism
-      url: photoprism.bullerbyn.local
+      url: https://www.photoprism.app/
     - icon: 475700/youtube-color
       name: youtube
-      url: yt.bullerbyn.local
+      url: https://www.youtube.com/
   dev:
     - icon: https://upload.wikimedia.org/wikipedia/commons/b/bb/Gitea_Logo.svg
       name: gitea
-      url: gitea.bullerbyn.local
+      url: https://about.gitea.com/
