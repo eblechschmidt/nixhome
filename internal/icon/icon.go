@@ -124,7 +124,7 @@ func cacheFile(icon, dir string) (string, error) {
 	for _, file := range files {
 		if base(file.Name()) == h {
 			f := filepath.Join(dir, file.Name())
-			log.Info().Str("icon", icon).Str("filename", f).Msg("Cashed icon found")
+			log.Info().Str("icon", icon).Str("filename", f).Msg("Using cashed icon")
 			return f, nil
 		}
 	}
