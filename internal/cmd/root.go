@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/eblechschmidt/nixhome/config"
 	"github.com/eblechschmidt/nixhome/internal/server"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
 
@@ -23,7 +25,11 @@ var rootCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		_, err := os.Stat(cfgFile)
 		if os.IsNotExist(err) {
-			return err
+			log.Info().Str("cfgFile", cfgFile).Msg("Config file does not exist. Create one.")
+			err := os.WriteFile(cfgFile, config.Example, os.ModePerm)
+			if err != nil {
+				return fmt.Errorf("could not create sample config: %w", err)
+			}
 		}
 		s, err := server.New(cfgFile, ":8080", dataDir)
 		if err != nil {

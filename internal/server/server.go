@@ -44,7 +44,7 @@ func (s *Server) serveFile(filename string) func(w http.ResponseWriter, r *http.
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		log.Debug().Str("mime-type", mt).Str("path", r.URL.Path).Str("filename", filename).Msg("Serving file")
+		log.Info().Str("mime-type", mt).Str("path", r.URL.Path).Str("filename", filename).Msg("Serving file")
 	}
 }
 
@@ -58,12 +58,11 @@ func (s *Server) Serve() error {
 }
 
 func New(cfgFile, addr, dataDir string) (*Server, error) {
+	log.Info().Str("cfgFile", cfgFile).Msg("Reading config")
 	c, err := cfg.FromFile(cfgFile)
 	if err != nil {
 		return nil, err
 	}
-
-	log.Debug().Any("Colors", c.Colors).Msg("Colors")
 
 	for _, group := range c.Apps {
 		for _, app := range group {

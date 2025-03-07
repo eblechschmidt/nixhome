@@ -18,7 +18,7 @@ import (
 
 func New(icon string, dataDir string, col string) (string, error) {
 	if icon == "" {
-		log.Debug().Msg("No icon specified")
+		log.Info().Msg("No icon specified")
 		return "", nil
 	}
 	dir := filepath.Join(dataDir, "icons")
@@ -54,7 +54,7 @@ func New(icon string, dataDir string, col string) (string, error) {
 }
 
 func download(icon, dir string) (string, error) {
-	log.Debug().Str("icon", icon).Str("dir", dir).Msg("Downloading icon")
+	log.Info().Str("icon", icon).Str("dir", dir).Msg("Downloading icon")
 	ispath := strings.Count(icon, "/") > 0
 	var url string
 	switch {
@@ -87,9 +87,9 @@ func download(icon, dir string) (string, error) {
 		if len(e) > 0 {
 			ext = e[0]
 		}
-		log.Debug().Str("icon", icon).Str("url", url).Strs("content-type", ct).Strs("ext", e).Msg("Get header")
+		log.Info().Str("icon", icon).Str("url", url).Strs("content-type", ct).Strs("ext", e).Msg("Get header")
 	}
-	log.Debug().Str("icon", icon).Str("status", resp.Status).Str("url", url).Strs("content-type", ct).Msg("Get header")
+	log.Info().Str("icon", icon).Str("status", resp.Status).Str("url", url).Strs("content-type", ct).Msg("Get header")
 
 	fname := filepath.Join(dir, hash(icon)+ext)
 	f, err := os.OpenFile(fname, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
@@ -124,11 +124,11 @@ func cacheFile(icon, dir string) (string, error) {
 	for _, file := range files {
 		if base(file.Name()) == h {
 			f := filepath.Join(dir, file.Name())
-			log.Debug().Str("icon", icon).Str("dir", dir).Str("filename", f).Msg("Cashed icon found")
+			log.Info().Str("icon", icon).Str("filename", f).Msg("Cashed icon found")
 			return f, nil
 		}
 	}
-	log.Debug().Str("icon", icon).Str("dir", dir).Msg("Icon not found in cash")
+	log.Info().Str("icon", icon).Str("dir", dir).Msg("Icon not found in cash")
 	return "", nil
 }
 
