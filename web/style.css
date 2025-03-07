@@ -120,16 +120,10 @@ a:hover{
 
 #container{
 	align-items: stretch;
-	display: grid;
-	grid-column-gap: 20px;
-	grid-row-gap: 3vh;
-	grid-template-columns: 1fr;
-	grid-template-rows: 8vh auto;
 	justify-items: stretch;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 5vh;
-	/* width: 60%; */
 	width: 1080px;
 }
 
@@ -231,11 +225,6 @@ a:hover{
 	#container
 	{
 		align-items: stretch;
-		display: grid;
-		grid-column-gap: 10px;
-		grid-row-gap: 0px;
-		grid-template-columns: 1fr;
-		grid-template-rows: 80px auto;
 		justify-items: stretch;
 		margin-bottom: 1vh;
 		margin-left: auto;
@@ -258,11 +247,6 @@ a:hover{
 	#container
 	{
 		align-items: stretch;
-		display: grid;
-		grid-column-gap: 10px;
-		grid-row-gap: 0px;
-		grid-template-columns: 1fr;
-		grid-template-rows: 80px auto;
 		justify-items: stretch;
 		margin-bottom: 1vh;
 		margin-left: auto;
@@ -288,11 +272,6 @@ a:hover{
 
 	#container{
 		align-items: stretch;
-		display: grid;
-		grid-column-gap: 20px;
-		grid-row-gap: 0px;
-		grid-template-columns: 1fr;
-		grid-template-rows: 80px auto;
 		justify-items: stretch;
 		margin-bottom: 1vh;
 		width: 90%;

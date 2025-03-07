@@ -47,3 +47,31 @@ apps:
     - icon: https://upload.wikimedia.org/wikipedia/commons/b/bb/Gitea_Logo.svg
       name: gitea
       url: https://about.gitea.com/
+bookmarks:
+  homeautomation:
+    - name: homeassistant
+      url: https://www.home-assistant.io/
+    - name: esphome
+      url: https://esphome.io/
+    - name: zigbee2mqtt
+      url: https://www.zigbee2mqtt.io/
+    - name: codeserver
+      url: https://code.visualstudio.com/
+  monitoring:
+    - name: grafana
+      url: https://grafana.com/
+  infrastructure:
+    - name: pihole
+      url: https://pi-hole.net/
+    - name: portainer
+      url: https://www.portainer.io/
+    - name: traefik
+      url: https://traefik.io/traefik/
+  media:
+    - name: photoprism
+      url: https://www.photoprism.app/
+    - name: youtube
+      url: https://www.youtube.com/
+  dev:
+    - name: gitea
+      url: https://about.gitea.com/

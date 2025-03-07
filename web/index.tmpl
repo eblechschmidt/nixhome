@@ -35,6 +35,19 @@
                 {{end}}
             </div>
         </section>
+        <section id="links">
+            <h3>Bookmarks</h3>
+            <div id="links_loop">
+            {{range $group_name, $group := .Apps}}
+                <div id="links_item">
+                    <h4>{{$group_name}}</h4>
+					{{range $group}}
+                    <a href="{{.URL}}">{{.Name}}</a>
+                    {{end}}
+                </div>
+            {{end}}
+            </div>
+        </section>
     </main>
 </body>
 </html>

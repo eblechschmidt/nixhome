@@ -8,8 +8,9 @@ import (
 )
 
 type Config struct {
-	Colors *Colors
-	Apps   map[string]Apps
+	Colors    *Colors
+	Apps      map[string]Apps
+	Bookmarks map[string]Bookmarks
 }
 
 type Apps []*App
@@ -19,6 +20,13 @@ type App struct {
 	Name          string
 	URL           string
 	ColorizedIcon template.HTML
+}
+
+type Bookmarks []*Bookmark
+
+type Bookmark struct {
+	Name string
+	URL  string
 }
 
 type Colors struct {
