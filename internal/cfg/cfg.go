@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"os"
 
+	"github.com/eblechschmidt/nixhome/internal/theme"
 	"gopkg.in/yaml.v3"
 )
 
@@ -32,13 +33,13 @@ type Bookmark struct {
 type Colors struct {
 	Dark  *ColorSet
 	Light *ColorSet
-	Icon  string
+	Icon  theme.Color
 }
 
 type ColorSet struct {
-	Background string
-	Text       string
-	Accent     string
+	Background theme.Color
+	Text       theme.Color
+	Accent     theme.Color
 }
 
 // FromFile takes a yaml file and unmarshals the config
@@ -54,5 +55,8 @@ func FromFile(file string) (*Config, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	// check colors
+
 	return &c, nil
 }

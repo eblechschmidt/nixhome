@@ -13,10 +13,11 @@ import (
 	"strings"
 
 	"github.com/crazy3lf/colorconv"
+	"github.com/eblechschmidt/nixhome/internal/theme"
 	"github.com/rs/zerolog/log"
 )
 
-func New(icon string, dataDir string, col string) (string, error) {
+func New(icon string, dataDir string, col theme.Color) (string, error) {
 	if icon == "" {
 		log.Info().Msg("No icon specified")
 		return "", nil
@@ -153,21 +154,17 @@ func col2hex(c color.Color) string {
 	return fmt.Sprintf("#%02x%02x%02x", uint8(r>>8), uint8(g>>8), uint8(b>>8))
 }
 
-func Colorize(data, color string) string {
-	hcol, scol, lcol := colorconv.ColorToHSL(hex2col(color))
+func Colorize(data string, color theme.Color) string {
+	hcol, scol, lcol := color.HSL()
 	// Regular expression to match both short and long hex color codes
 
 	re := regexp.MustCompile(`#[0-9a-fA-F]{3,6}\b`)
 
 	// Find all matches
-
 	matches := re.FindAllString(data, -1)
-
 	lmin := 1.0
-
 	for _, m := range matches {
 		_, _, l := colorconv.ColorToHSL(hex2col(m))
-
 		if l < lmin {
 			lmin = l
 		}
@@ -176,7 +173,6 @@ func Colorize(data, color string) string {
 	for _, m := range matches {
 		_, _, l := colorconv.ColorToHSL(hex2col(m))
 		lnew := 1 - ((1 - l) / (1 - lmin) * (1 - lcol))
-		// fmt.Println(l, lmin, lcol, lnew)
 		newcol, err := colorconv.HSLToColor(hcol, scol, lnew)
 		if err != nil {
 			fmt.Println(err)
@@ -185,7 +181,6 @@ func Colorize(data, color string) string {
 		newhex := col2hex(newcol)
 
 		data = strings.ReplaceAll(data, m, newhex)
-
 	}
 
 	// svg that do not have color information will be colored directly with a
