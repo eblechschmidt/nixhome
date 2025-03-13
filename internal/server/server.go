@@ -5,11 +5,11 @@ import (
 	"html/template"
 	"mime"
 	"net/http"
+	"os"
 	"path/filepath"
 
 	"github.com/eblechschmidt/nixhome/internal/cfg"
 	"github.com/eblechschmidt/nixhome/internal/icon"
-	"github.com/eblechschmidt/nixhome/web"
 	"github.com/rs/zerolog/log"
 )
 
@@ -87,7 +87,9 @@ func New(cfgFile, addr, dataDir string) (*Server, error) {
 
 	s.Handler = mux
 	s.Addr = addr
-	s.tmpl, err = template.New("index.tmpl").ParseFS(web.FS, "*")
+
+	s.tmpl, err = template.New("index.tmpl").
+		ParseFS(os.DirFS(filepath.Join(dataDir, "template")), "*")
 	if err != nil {
 		return nil, err
 	}

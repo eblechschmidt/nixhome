@@ -7,5 +7,5 @@ import (
 
 // content holds our static web server content.
 //
-//go:embed *
+//go:embed *.tmpl *.css
 var FS embed.FS
