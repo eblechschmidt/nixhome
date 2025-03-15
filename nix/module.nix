@@ -156,7 +156,7 @@ in {
     systemd.services.nixhome = {
       wantedBy = ["multi-user.target"];
       serviceConfig = {
-        Type = "Exec";
+        # Type = "Exec";
         ExecStart = ''
           ${lib.getExe cfg.package} \
             --config ${nhconfig} \
