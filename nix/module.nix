@@ -198,6 +198,7 @@ in {
         ${lib.getExe cfg.package} \
           --config ${nhconfig} \
           --dataDir ${cfg.dataDir}
+          --addr ${cfg.address}
       '';
     };
   };
