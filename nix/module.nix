@@ -159,19 +159,13 @@ in {
     systemd.services.nixhome = {
       wantedBy = ["multi-user.target"];
       serviceConfig = {
-        # Type = "Exec";
-        ExecStart = ''
-          ${lib.getExe cfg.package} \
-            --config ${nhconfig} \
-            --dataDir ${cfg.dataDir}
-        '';
         Restart = "on-failure";
         User = "nixhome";
         Group = "nixhome";
         DynamicUser = true;
         StateDirectory = "photoprism";
         WorkingDirectory = "${cfg.dataDir}";
-        RuntimeDirectory = "${cfg.dataDir}";
+        RuntimeDirectory = "nixhome";
         ReadWritePaths = [
           cfg.dataDir
         ];
@@ -200,6 +194,11 @@ in {
         ];
         UMask = "0066";
       };
+      script = ''
+        ${lib.getExe cfg.package} \
+          --config ${nhconfig} \
+          --dataDir ${cfg.dataDir}
+      '';
     };
   };
 }
