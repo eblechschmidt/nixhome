@@ -5,7 +5,10 @@
   ...
 }: let
   cfg = config.services.nixhome;
-  nhconfig = pkgs.writeTextFile "nixhome.yaml" (lib.generators.toYAML {} cfg.settings);
+  nhconfig = pkgs.writeTextFile {
+    name = "nixhome.yaml";
+    text = lib.generators.toYAML {} cfg.settings;
+  };
 in {
   options = {
     services.nixhome = {
