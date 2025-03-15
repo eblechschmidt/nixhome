@@ -35,8 +35,8 @@ in {
           icon = lib.mkOption {
             description = "Background color for dark theme.";
             type = lib.types.str;
-            default = "#2E3440";
-            example = "#2E3440";
+            default = "#5E81AC";
+            example = "#5E81AC";
           };
           dark = {
             background = lib.mkOption {
