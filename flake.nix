@@ -10,23 +10,27 @@
         pkgs = import inputs.nixpkgs {
           inherit system;
         };
-      in rec {
-        packages = rec {
-          nixhome = pkgs.buildGoModule {
-            pname = "nixhome";
-            version = "0.0.1";
-            src = ./.;
-            vendorHash = null;
-          };
+        lib = pkgs.lib;
+        nixhome = pkgs.callPackage ./nix/package.nix {};
+        app = {
+          type = "app";
+          program = "${nixhome}/bin/nixhome";
+        };
+        module = ./nix/module.nix;
+      in {
+        packages = {
+          nixhome = nixhome;
           default = nixhome;
         };
 
-        apps = rec {
-          nixhome = {
-            type = "app";
-            program = "${packages.nixhome}/bin/nixhome";
-          };
-          default = nixhome;
+        nixosModules = {
+          nixhome = module;
+          default = module;
+        };
+
+        apps = {
+          nixhome = app;
+          default = app;
         };
 
         devShells = {
@@ -44,7 +48,8 @@
             ];
 
             shellHook = ''
-              zsh
+              ${lib.getExe pkgs.zsh}
+              exit
             '';
 
             # Need to disable fortify hardening because GCC is not built with -oO,

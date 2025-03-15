@@ -16,10 +16,12 @@ import (
 
 var cfgFile string
 var dataDir string
+var addr string
 
 func init() {
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "c", "config file (default is $HOME/.cobra.yaml)")
 	rootCmd.PersistentFlags().StringVar(&dataDir, "dataDir", "d", "directory where the icon chache is stored")
+	rootCmd.PersistentFlags().StringVar(&addr, "addr", "a", "address the web server should bind to (e.g. :8080)")
 }
 
 var rootCmd = &cobra.Command{
@@ -33,7 +35,7 @@ var rootCmd = &cobra.Command{
 		if err := ensureTemplate(); err != nil {
 			return err
 		}
-		s, err := server.New(cfgFile, ":8080", dataDir)
+		s, err := server.New(cfgFile, addr, dataDir)
 		if err != nil {
 			return err
 		}
