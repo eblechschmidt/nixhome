@@ -76,46 +76,71 @@ in {
             };
           };
         };
-        apps = lib.types.attrsOf (lib.types.submodule ({name, ...}: {
-          options = {
-            icon = lib.mkOption {
-              description = ''
-                URL to an icon or id/name for simple Simple Icons or https://www.svgrepo.com.
-              '';
-              type = lib.types.str;
-              default = "";
-              example = "353829/grafana";
-            };
-            name = lib.mkOption {
-              description = "Name of the app.";
-              type = lib.types.str;
-              default = "";
-              example = "grafana";
-            };
-            url = lib.mkOption {
-              description = "URL of the app.";
-              type = lib.types.str;
-              default = "";
-              example = "https://grafana.com/";
-            };
+        apps = lib.mkOption {
+          description = "Groups of apps.";
+          default = {};
+          example = {
+            monitoring = [
+              {
+                name = "grafana";
+                url = "https://grafana.com";
+                icon = "353829/grafana";
+              }
+            ];
           };
-        }));
-        bookmarks = lib.types.attrsOf (lib.types.submodule ({name, ...}: {
-          options = {
-            name = lib.mkOption {
-              description = "Name of the bookmark.";
-              type = lib.types.str;
-              default = "";
-              example = "grafana";
+          type = lib.types.attrsOf (lib.type.listOf (lib.types.submodule ({name, ...}: {
+            options = {
+              icon = lib.mkOption {
+                description = ''
+                  URL to an icon or id/name for simple Simple Icons or https://www.svgrepo.com.
+                '';
+                type = lib.types.str;
+                default = "";
+                example = "353829/grafana";
+              };
+              name = lib.mkOption {
+                description = "Name of the app.";
+                type = lib.types.str;
+                default = "";
+                example = "grafana";
+              };
+              url = lib.mkOption {
+                description = "URL of the app.";
+                type = lib.types.str;
+                default = "";
+                example = "https://grafana.com/";
+              };
             };
-            url = lib.mkOption {
-              description = "URL of the bookmark.";
-              type = lib.types.str;
-              default = "";
-              example = "https://grafana.com/";
-            };
+          })));
+        };
+        bookmarks = lib.mkOption {
+          description = "Groups of bookamrks.";
+          default = {};
+          example = {
+            monitoring = [
+              {
+                name = "grafana";
+                url = "https://grafana.com";
+              }
+            ];
           };
-        }));
+          type = lib.types.attrsOf (lib.types.listOf (lib.types.submodule ({name, ...}: {
+            options = {
+              name = lib.mkOption {
+                description = "Name of the bookmark.";
+                type = lib.types.str;
+                default = "";
+                example = "grafana";
+              };
+              url = lib.mkOption {
+                description = "URL of the bookmark.";
+                type = lib.types.str;
+                default = "";
+                example = "https://grafana.com/";
+              };
+            };
+          })));
+        };
       };
     };
   };
