@@ -12,6 +12,7 @@
 <body>
 
     <main id="container" class="fade">
+        {{if .Apps}}
         <section id="apps">
             <h3>Applications</h3>
             <div id="apps_loop">
@@ -35,10 +36,12 @@
                 {{end}}
             </div>
         </section>
+        {{end}}
+        {{if .Bookmarks}}
         <section id="links">
             <h3>Bookmarks</h3>
             <div id="links_loop">
-            {{range $group_name, $group := .Apps}}
+            {{range $group_name, $group := .Bookmarks}}
                 <div id="links_item">
                     <h4>{{$group_name}}</h4>
 					{{range $group}}
@@ -48,6 +51,7 @@
             {{end}}
             </div>
         </section>
+        {{end}}
     </main>
 </body>
 </html>
