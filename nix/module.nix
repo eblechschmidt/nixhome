@@ -88,7 +88,7 @@ in {
               }
             ];
           };
-          type = lib.types.attrsOf (lib.type.listOf (lib.types.submodule ({name, ...}: {
+          type = lib.types.attrsOf (lib.types.listOf (lib.types.submodule ({name, ...}: {
             options = {
               icon = lib.mkOption {
                 description = ''
