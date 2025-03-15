@@ -197,7 +197,7 @@ in {
       script = ''
         ${lib.getExe cfg.package} \
           --config ${nhconfig} \
-          --dataDir ${cfg.dataDir}
+          --dataDir ${cfg.dataDir} \
           --addr ${cfg.address}
       '';
     };
