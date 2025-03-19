@@ -45,7 +45,7 @@ services.nixhome = {
   enable = true;
   # is an attirbute set modeled after the example config. Please refer to the
   # [Configuration](#configuration) for further information
-  settings = {}
+  settings = {};
 };
 ```
 
