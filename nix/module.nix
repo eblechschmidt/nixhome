@@ -163,7 +163,7 @@ in {
         User = "nixhome";
         Group = "nixhome";
         DynamicUser = true;
-        StateDirectory = "photoprism";
+        StateDirectory = "nixhome";
         WorkingDirectory = "${cfg.dataDir}";
         RuntimeDirectory = "nixhome";
         ReadWritePaths = [
