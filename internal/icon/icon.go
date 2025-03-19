@@ -81,6 +81,10 @@ func download(icon, dir string) (string, error) {
 	ct, ok := resp.Header["Content-Type"]
 	ext := ".txt"
 	if ok && len(ct) == 1 {
+		if ct[0] != "image/svg+xml" {
+			log.Fatal().Str("icon", icon).Str("content-type", ct[0]).Msg("only svg images are supported")
+			return "", nil
+		}
 		e, err := mime.ExtensionsByType(ct[0])
 		if err != nil {
 			return "", err
