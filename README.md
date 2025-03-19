@@ -5,6 +5,8 @@
 shamelessly copied). A unique feature of `nixhome` is that it retrieves svg icons
 and applys a color to it so they nicely fit the design.
 
+![nixhome](./doc/images/nixhome.png)
+
 # NixOS module
 
 ## Installation
