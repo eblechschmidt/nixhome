@@ -1,0 +1,9 @@
+version: '3.3'
+
+services:
+  nixhome:
+    container_name: nixhome
+    build: ./
+    restart: unless-stopped
+    volumes:
+      - ./nixhome/config:/config
